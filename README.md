@@ -124,5 +124,5 @@ This is a module file that saves settings from IntelliJ IDEA.
 Please contact me if you have any suggestions for improvement.
 
 ## Authors
-Jill Gallaher - Code, Investigation, Analysis, & Visualization
-Joel Brown & Alexander R. A. Anderson - Conceptualization, Methodology, Writing, & Editing
+* Jill Gallaher - Code, Investigation, Analysis, & Visualization
+* Joel Brown & Alexander R. A. Anderson - Conceptualization, Methodology, Writing, & Editing
