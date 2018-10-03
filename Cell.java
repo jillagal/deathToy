@@ -7,7 +7,6 @@ import java.util.*;
  */
 class Cell {
   private Random diceRoller = new Random();
-  private Functions fun = new Functions();
 
   boolean quiescence;//quiescent state
   int tDiv;//records total time before division
@@ -17,8 +16,8 @@ class Cell {
   int family;//trade-off bounds
   float x, y;//cell position
   float angleInDegree;//cell movement angle
-  float vDiv;//proliferation rate
-  float xDiv;//position in cell cycle (0-1)
+  float vDiv;//proliferation rate - rate at which cell moves through cell cycle
+  float xDiv;//position in cell cycle (0-1) - at 1, cell can divide
   float speedX, speedY; //x and y speed
   float prevSp;//parental migration speed
 
@@ -32,7 +31,7 @@ class Cell {
     this.y = y;
     this.family = family;
     this.quiescence = false;
-    this.deathMeter = 1500;//if set below 1500, cell starts to die
+    this.deathMeter = 1500;//if set below 1500, cell starts to countdown to die
   }
    
   /****************************
@@ -143,7 +142,7 @@ class Cell {
         angBank[y]=999;
       }
     }
-    else if(aMax >= 360 && aMin>=360) {//new
+    else if(aMax >= 360 && aMin>=360) {
       for (int y = aMin-360; y<aMax-360; y++){
         angBank[y]=999;
       }
@@ -161,8 +160,8 @@ class Cell {
 
   void updatePers() {
     if(this.walkTime<=0){//reset persistence and angle if walk is done
-      this.walkTime = (int) (fun.gaussSample(Pars.persMean, Pars.persError, Pars.persMin, Pars.persMax));
-      this.angleInDegree = fun.rangeSample(0, 360);
+      this.walkTime = (int) (Functions.gaussSample(Pars.persMean, Pars.persError, Pars.persMin, Pars.persMax));
+      this.angleInDegree = Functions.rangeSample(0, 360);
       this.setSpeedXY();
     }
     else{//count down walk time
@@ -183,7 +182,7 @@ class Cell {
   }
 
   /*********************
-  * Speed conversion methods
+  * Speed conversion
   *********************/
   //set the XY speed from the previous absolute
   void setSpeedXY(){
@@ -209,15 +208,17 @@ class Cell {
         this.setSpeedXY();//x and y speed from speed
 
         //get persistence time from Gaussian
-        this.walkTime = (int) (fun.gaussSample(Pars.persMean, Pars.persError, Pars.persMin, Pars.persMax));
+        this.walkTime = (int) (Functions.gaussSample(Pars.persMean, Pars.persError, Pars.persMin, Pars.persMax));
 	}
 
-	void divNewParams(int findAngle, int identify) {
+	void divNewParams(int findAngle, int identify,int pDiv, float pSp) {
+        this.prevDiv = pDiv;
+        this.prevSp = pSp;
         //set cells to move in opposite directions upon division
         this.angleInDegree = (identify==1) ? findAngle : (findAngle>=180) ? findAngle-180 : findAngle+180;
 
         //get new traits allowing drift
-        float[] traits = fun.inheritDriftBounded(this.prevDiv,this.prevSp,this.family,Pars.drift);
+        float[] traits = Functions.inheritDriftBounded(this.prevDiv,this.prevSp,this.family,Pars.drift);
 
   	    int dSt = (int) traits[0];
         this.prevDiv = dSt;//inherited intermitotic time
@@ -229,12 +230,7 @@ class Cell {
         this.setSpeedXY();
 
         //reset persistence time
-        this.walkTime =(int) (fun.gaussSample(Pars.persMean, Pars.persError, Pars.persMin, Pars.persMax));
-  }
-
-  void addPrevs(int pDiv, float pSp){//apply previous traits of new cell from parent cell
-    this.prevDiv = pDiv;
-    this.prevSp = pSp;
+        this.walkTime =(int) (Functions.gaussSample(Pars.persMean, Pars.persError, Pars.persMin, Pars.persMax));
   }
    
   /***************************

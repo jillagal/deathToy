@@ -1,10 +1,41 @@
 import java.util.Random;
+import java.io.*;
 
 class Functions {
-	private Random diceRoller = new Random();
+	static private Random diceRoller = new Random();
+
+	//write integer vector to files
+    static void writeIntVector(String strF, int[] vector){
+        try{
+            BufferedWriter fout0 = new BufferedWriter(new FileWriter(strF,true));
+            for (int aVector : vector) {
+                fout0.write(aVector + " ");
+            }
+            fout0.write("\n");
+            fout0.close();
+        }
+        catch(IOException e){
+            System.out.println("There was a problem"+e);
+        }
+    }
+
+    //write float vector to files
+    static void writeFloatVector(String strF, float[] vector){
+        try{
+            BufferedWriter fout0 = new BufferedWriter(new FileWriter(strF,true));
+            for (float aVector : vector) {
+                fout0.write(aVector + " ");
+            }
+            fout0.write("\n");
+            fout0.close();
+        }
+        catch(IOException e){
+            System.out.println("There was a problem"+e);
+        }
+    }
 
 	//sample from a bounded Gaussian distribution
-	float gaussSample(float mean, float error, float min, float max){
+	static float gaussSample(float mean, float error, float min, float max){
 		float gauss = (float) diceRoller.nextGaussian();
 		float trait = error*gauss+mean;
 		while(trait <= min|| trait>= max){
@@ -15,16 +46,16 @@ class Functions {
 	}
 
 	//sample within a range
-	int rangeSample(int min, int max){
+	static int rangeSample(int min, int max){
         return diceRoller.nextInt(max-min+1)+min;
 	}
 
 	//inherit from parental phenotype according to trade-off bounds and drift rate
-	float[] inheritDriftBounded(float prevD, float prevS, int fam, int drift){
-		float[] inTraits = {0,0};//check divMin instances!!! and speMax
+	static float[] inheritDriftBounded(float prevD, float prevS, int fam, int drift){
+		float[] inTraits = {0,0};
 
-		float minD = Pars.divMin;
-		float maxS = Pars.spMax;
+		float rangeD=Pars.divMax-Pars.divMin;
+		float rangeS=Pars.spMax-Pars.spMin;
 
 		//find drift vales for IMT and speed
 		float rand = rangeSample(-drift, drift)*Pars.divConv*Pars.epD;
@@ -34,24 +65,24 @@ class Functions {
 		float newD = prevD+rand;
 		float newS = prevS+rand2;
 		if(fam==0){//open trade-off - just fit within bounds
-			inTraits[0] = (newD>Pars.divMax) ? Pars.divMax : (newD<minD) ? minD : newD;
-        	inTraits[1] = (newS>maxS) ? maxS : (newS<Pars.spMin) ? Pars.spMin : newS;
+			inTraits[0] = (newD>Pars.divMax) ? Pars.divMax : (newD<Pars.divMin) ? Pars.divMin : newD;
+        	inTraits[1] = (newS>Pars.spMax) ? Pars.spMax : (newS<Pars.spMin) ? Pars.spMin : newS;
 		}
 		else{//convex (fam=1) and concave (fam=2) trade-offs, resample if out of bounds
 			boolean checkFit = (fam==1) ?
-				1>=(newD-Pars.divMax)*(newD-Pars.divMax)/((Pars.divMax-minD)*(Pars.divMax-minD))+(newS-Pars.spMin)*(newS-Pars.spMin)/((maxS-Pars.spMin)*(maxS-Pars.spMin)) :
-				1<=(newD-Pars.divMin)*(newD-Pars.divMin)/((Pars.divMax-minD)*(Pars.divMax-minD))+(newS-Pars.spMax)*(newS-Pars.spMax)/((maxS-Pars.spMin)*(maxS-Pars.spMin));
+				1>=(newD-Pars.divMax)*(newD-Pars.divMax)/(rangeD*rangeD)+(newS-Pars.spMin)*(newS-Pars.spMin)/(rangeS*rangeS):
+				1<=(newD-Pars.divMin)*(newD-Pars.divMin)/(rangeD*rangeD)+(newS-Pars.spMax)*(newS-Pars.spMax)/(rangeS*rangeS);
 			while(!checkFit){
 				rand = rangeSample(-drift, drift)*Pars.divConv*Pars.epD;
 				rand2 = rangeSample(-drift, drift)*Pars.speedConv*Pars.epS;
 				newD = prevD+rand;
 				newS = prevS+rand2;
 				checkFit = (fam==1) ?
-						1>=(newD-Pars.divMax)*(newD-Pars.divMax)/((Pars.divMax-minD)*(Pars.divMax-minD))+(newS-Pars.spMin)*(newS-Pars.spMin)/((maxS-Pars.spMin)*(maxS-Pars.spMin)) :
-						1<=(newD-Pars.divMin)*(newD-Pars.divMin)/((Pars.divMax-minD)*(Pars.divMax-minD))+(newS-Pars.spMax)*(newS-Pars.spMax)/((maxS-Pars.spMin)*(maxS-Pars.spMin));
+						1>=(newD-Pars.divMax)*(newD-Pars.divMax)/(rangeD*rangeD)+(newS-Pars.spMin)*(newS-Pars.spMin)/(rangeS*rangeS):
+						1<=(newD-Pars.divMin)*(newD-Pars.divMin)/(rangeD*rangeD)+(newS-Pars.spMax)*(newS-Pars.spMax)/(rangeS*rangeS);
 			}
-			inTraits[0] = (newD>Pars.divMax) ? Pars.divMax : (newD<minD) ? minD : newD;
-        	inTraits[1] = (newS>maxS) ? maxS : (newS<Pars.spMin) ? Pars.spMin : newS;
+			inTraits[0] = (newD>Pars.divMax) ? Pars.divMax : (newD<Pars.divMin) ? Pars.divMin : newD;
+        	inTraits[1] = (newS>Pars.spMax) ? Pars.spMax : (newS<Pars.spMin) ? Pars.spMin : newS;
 		}
 
         return inTraits;

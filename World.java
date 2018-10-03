@@ -5,34 +5,36 @@ import java.awt.*;
 import java.awt.image.BufferedImage; 
 
 class World{
-	private static Draw drawing = new Draw();
-	private Functions fun = new Functions();
 	private Random diceRoller = new Random();
 
+    ArrayList<Cell> cells = new ArrayList<>();//cell list
+
+	//Neighborhood grid
 	private int nN = 60;//number of lattice points
 	private int sN = Pars.sizeW/nN;//grid size in pixels
 	private int maxO = 8*80;//number of cells in each lattice point
 	private int[][][] gridN = new int[nN][nN][maxO];//stores ids of cells in lattice points
 	private int[][] gridPop = new int[nN][nN];//stores number of cells in lattice points
 
-	private int maxN=400;//max # of neighbors
+	//Neighbors lists
+    private int maxN=400;//max # of neighbors
 	private int[] neighborList = new int[maxN];//list of neighbors
 	private float[] neighborDist = new float[maxN];//distance to each neighbor
 	private float[] neighborAng = new float[maxN];//angle to each neighbor
 
-	ArrayList<Cell> cells = new ArrayList<>();//cell list
-
-	private int catTimer=0;//tracks time to next catastrophe
+	//tracking & recording variables for output
+    private int catTimer=0;//tracks time to next catastrophe
 	private int numCD=225;//tracks number of cells that die in catastrophe - initial value assumes full of cells
-
 	int numPro;//tracks number of cells actively proliferating
     private int neighborNum=0; //tracks number of neighbors
     private int newAngle;//new angle after division
+    private float[] traitValues = new float[Pars.MAX_CELLS];//stores traits to record
 
-    /********************
-     * initialize cells
-     *********************/
-    void setCells(){
+    /*****************
+     * CONSTRUCTOR:
+     ****************/
+    World() {
+        //define initial cell position and attributes
         Cell cell = new Cell(Pars.sizeW/2, Pars.sizeH/2,Pars.cellType);
         cells.add(cell);
         cell.setCell();
@@ -67,10 +69,12 @@ class World{
                 cell.activate();//reactivate proliferation and migration in case previously quiescent
 
                 if(cell.xDiv>=1){//cycle time is reached
-                    division(cell,newAngle);
+                    division(cell,newAngle);//cell divides
                 }
                 else{
-                    move(cell);
+                    move(cell);//cell moves
+                    cell.updatePers();//update persistence
+                    cell.updatePos();//update position in cell cycle
                 }
             } //end of pro
         }//end of cell loop
@@ -80,29 +84,6 @@ class World{
             this.collectDataSometimes();
         }
     }
-
-	/********************
-	* grid
-	********************/
-    private void assignGrid(){
-		//reset grid
-		for(int i=0;i<nN;i++){
-			for(int j=0;j<nN;j++){
-				gridPop[i][j]=0;
-				for(int k=0;k<maxO;k++){
-					gridN[i][j][k]=-1;
-				}
-			}
-		}
-		for(int i = cells.size(); --i >= 0; ){
-			Cell cell = cells.get(i);
-			int gIndX = Math.round(cell.x/sN);
-		    int gIndY = Math.round(cell.y/sN);
-		    int gP = gridPop[gIndX][gIndY];
-		    gridN[gIndX][gIndY][gP]=i;//record index
-		    gridPop[gIndX][gIndY]++;//update number of cells in grid
-		}
-	}
 
 	/***************
 	* death functions
@@ -169,8 +150,28 @@ class World{
 
 
 	/*************
-	*Other
+	*Neighborhoods
 	***********/
+
+    private void assignGrid(){
+        //reset grid
+        for(int i=0;i<nN;i++){
+            for(int j=0;j<nN;j++){
+                gridPop[i][j]=0;
+                for(int k=0;k<maxO;k++){
+                    gridN[i][j][k]=-1;//default no cell value
+                }
+            }
+        }
+        for(int i = cells.size(); --i >= 0; ){
+            Cell cell = cells.get(i);
+            int gIndX = Math.round(cell.x/sN);
+            int gIndY = Math.round(cell.y/sN);
+            int gP = gridPop[gIndX][gIndY];
+            gridN[gIndX][gIndY][gP]=i;//record index
+            gridPop[gIndX][gIndY]++;//update number of cells in grid
+        }
+    }
 
     int checkNeighbors(Cell cell, int i){
         //reset neighbors
@@ -222,6 +223,10 @@ class World{
         return newAngle;
     }
 
+    /******************
+    * Move and Divide
+     * ***************/
+
     void division(Cell cell, int findAngle){//divide into an open space
         float angRad = (float) Math.toRadians(findAngle);
 
@@ -229,9 +234,8 @@ class World{
         float yPos = (float) (cell.y+2*Pars.effRad*(-Math.sin(angRad)));
         Cell child = new Cell(xPos,yPos,cell.family);
         cells.add(child);
-        child.addPrevs(cell.prevDiv,cell.prevSp);//assign parental traits to daughter cell
-        cell.divNewParams(findAngle, 0);
-        child.divNewParams(findAngle, 1);
+        cell.divNewParams(findAngle, 0,cell.prevDiv,cell.prevSp);
+        child.divNewParams(findAngle, 1,cell.prevDiv,cell.prevSp);
     }
 
     void move(Cell cell){
@@ -240,23 +244,22 @@ class World{
             Cell cellOther = cells.get(neighborList[j]);
             boolean collision = cell.intersect(cellOther.x, cellOther.y, cellOther.speedX, cellOther.speedY);
             if(collision){//if cell contacts another, reset persistence, angle, and speed for both cells
-                cell.walkTime = (int) (fun.gaussSample(Pars.persMean, Pars.persError, Pars.persMin, Pars.persMax));
+                cell.walkTime = (int) (Functions.gaussSample(Pars.persMean, Pars.persError, Pars.persMin, Pars.persMax));
                 cell.angleInDegree = diceRoller.nextInt(360);
                 cell.setSpeedXY();
 
-                cellOther.walkTime = (int) (fun.gaussSample(Pars.persMean, Pars.persError, Pars.persMin, Pars.persMax));
+                cellOther.walkTime = (int) (Functions.gaussSample(Pars.persMean, Pars.persError, Pars.persMin, Pars.persMax));
                 cellOther.angleInDegree = diceRoller.nextInt(360);
                 cellOther.setSpeedXY();
             }
         }
-        cell.updatePers();//update persistence
-        cell.updatePos();//update position
     }
 
     /******************
-     *Data collection
+     * Data & output
      ******************/
 
+    //data collected at every frame
     private void collectDataAlways(){
 		Data.initialize();
 		numPro = 0;
@@ -279,7 +282,8 @@ class World{
 
 	}
 
-	private void collectDataSometimes(){//data to be written to files
+	//data collected less often - to be written to files
+	private void collectDataSometimes(){
 		for (int i = cells.size(); --i >= 0; ) {
 			Cell cell = cells.get(i);
 			numPro+=(!cell.quiescence) ? 1 : 0;
@@ -293,8 +297,66 @@ class World{
 
 	}
 
+    //graphics
+	void writeGFile(int frameNum){
+        int fNN=frameNum/60;
+
+        BufferedImage bi1=drawIt(1,frameNum);
+        File f1 = new File(Pars.outFile+"/movie/"+fNN+".gif");
+        try {ImageIO.write(bi1, "gif", f1);}
+        catch (IOException ex) {ex.printStackTrace();}
+    }
+
+    void writeDFile(int frameNum){
+        int getTime=frameNum*Pars.frameTime/60;
+        System.out.println(getTime/24+" "+cells.size());
+
+        String str = Pars.outFile+"/data/popTime.txt";
+        int[] vectorI = {getTime, cells.size(), numPro};
+        Functions.writeIntVector(str, vectorI);
+
+        str = Pars.outFile+"/data/divAveStd.txt";
+        float[] vectorF1 = {getTime, Data.divAve, Data.divStd};
+        Functions.writeFloatVector(str, vectorF1);
+
+        str = Pars.outFile+"/data/spAveStd.txt";
+        float[] vectorF2 = {getTime, Data.speedAve, Data.spStd};
+        Functions.writeFloatVector(str, vectorF2);
+
+
+        if(getTime==2400){
+            str=Pars.outFile+"/data/divs.txt";
+            for(int i=0;i<Pars.MAX_CELLS;i++) {
+                if(i<cells.size()){
+                    Cell cell = (Cell) cells.get(i);
+                    traitValues[i]=1.f/(cell.vDiv*Pars.divConv);
+                }
+                else{
+                    traitValues[i]=99;//use 99 for N/A
+                }
+
+            }
+            Functions.writeFloatVector(str, traitValues);
+
+            str=Pars.outFile+"/data/spees.txt";
+            for(int i=0;i<Pars.MAX_CELLS;i++) {
+                if(i<cells.size()){
+                    Cell cell = (Cell) cells.get(i);
+                    traitValues[i]=1.f*cell.prevSp/Pars.speedConv;
+                }
+                else{
+                    traitValues[i]=99;//use 99 for N/A
+                }
+
+            }
+            Functions.writeFloatVector(str, traitValues);
+        }
+
+
+    }
+
 	/********************
-	* GRAPHICS
+	* Graphics
 	*********************/
 
     BufferedImage drawIt(int trait, int frameNum){
@@ -302,24 +364,15 @@ class World{
 	  	Graphics2D g0 = bi.createGraphics();
 
 	  	//main drawing
-	  	drawing.background(g0,Pars.sizeW,Pars.sizeH);
-	  	drawing.renderCells(g0,cells,trait);
+	  	Draw.background(g0,Pars.sizeW,Pars.sizeH);
+	  	Draw.renderCells(g0,cells,trait);
 
 	  	//display info
-	  	drawing.scale(g0);	  	
- 		drawing.dispNumCells(g0,cells.size(),numPro);		
- 		drawing.time(g0,frameNum);
+	  	Draw.scale(g0);
+ 		Draw.dispNumCells(g0,cells.size(),numPro);
+ 		Draw.time(g0,frameNum);
 
 	    return bi;
-	}
-
-	void writeGFile(int frameNum){
-        int fNN=frameNum/60;
-
-		BufferedImage bi1=drawIt(1,frameNum);
-        File f1 = new File(Pars.outFile+"/movie/"+fNN+".gif");
-        try {ImageIO.write(bi1, "gif", f1);} 
-        catch (IOException ex) {ex.printStackTrace();}
 	}
 
 	

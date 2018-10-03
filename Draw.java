@@ -3,13 +3,13 @@ import java.awt.*;
 
 class Draw{
 
-	void background(Graphics g1, int sW, int sH){
+	static void background(Graphics g1, int sW, int sH){
 		g1.setColor(Color.white);
 	  	g1.fillRect(0,0,sW,sH);
 	}
 
 	//draw scale line
-	void scale(Graphics g1){
+	static void scale(Graphics g1){
 		g1.setColor(Color.black);
 	 	g1.drawLine((int) ((Pars.dishDiamMicm/2-500)*Pars.micMToPix),60,(int) ((Pars.dishDiamMicm/2+500)*Pars.micMToPix), 60);
         g1.drawLine((int) ((Pars.dishDiamMicm/2-500)*Pars.micMToPix),70,(int) ((Pars.dishDiamMicm/2-500)*Pars.micMToPix), 50);
@@ -19,7 +19,7 @@ class Draw{
 	}
 
 	//draw cells
-	void renderCells(Graphics g1, ArrayList cells, int trait){
+	static void renderCells(Graphics g1, ArrayList cells, int trait){
 		for (int i = cells.size(); --i >=0; ) {
            	Cell cell = (Cell) cells.get(i);
           	float tempT = 1.f/(cell.vDiv);
@@ -49,7 +49,7 @@ class Draw{
 	}
 
 	//display number of cells proliferating, quiescent, and total
-	void dispNumCells(Graphics g1, int cS, int nP){
+	static void dispNumCells(Graphics g1, int cS, int nP){
 		g1.setFont(new Font("Dialogue", Font.BOLD, 20));
         g1.setColor(Color.black); //black
 		g1.drawString("Pro "+nP+" ", Pars.sizeW-120, Pars.sizeH/30);
@@ -58,7 +58,7 @@ class Draw{
 	}
 
 	//display time in d:h:m
-	void time(Graphics g1, int fN){
+	static void time(Graphics g1, int fN){
 		int fontAt = Pars.sizeW/50; 
 		int fontAt2 = Pars.sizeH/22; 
 	    g1.setColor(Color.black);
@@ -76,7 +76,7 @@ class Draw{
 	********************/
 
 	//defines color map for phenotype combination
-	private Color colorSet2DP(float current1, float max1, float min1, float current2, float max2, float min2){
+	static private Color colorSet2DP(float current1, float max1, float min1, float current2, float max2, float min2){
 		Color color;
 		int angSect;
 		float thetaCol;
