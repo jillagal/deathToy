@@ -89,10 +89,10 @@ This file contains the parameters for the simulation.
 This file contains most of the functions for updating the simulation. 
 * **World()**: The constructor defines the initial cell position and attributes.
 * **frameUpdate()**: This function is called in the Main class and proceeds as follows:
-1) At the top of the frame, we remove dead cells, countdown the timers set for cells that are set to die, and check for catastrophic deaths.
-2) Then, assignGrid() is called that records information about cells within a gridded structure to be accessed later. For each nieghborhood, a list of cell indexes and the total cell population is recorded.
-3) The cell loop is called that goes through all cells checking for random death, checking for quiesence due to lack of space from neighbors, and if not quiescent, will divide if gone through the cell cycle (xDiv=1), or move and update if not (xDiv<1).
-4) Metrics are updated and recorded periodically.
+  1. At the top of the frame, we remove dead cells, countdown the timers set for cells that are set to die, and check for catastrophic deaths.
+  2. Then, assignGrid() is called that records information about cells within a gridded structure to be accessed later. For each nieghborhood, a list of cell indexes and the total cell population is recorded.
+  3. The cell loop is called that goes through all cells checking for random death, checking for quiesence due to lack of space from neighbors, and if not quiescent, will divide if gone through the cell cycle (xDiv=1), or move and update if not (xDiv<1).
+  4. Metrics are updated and recorded periodically.
 * **checkNeighbors()**: This function finds only the nearest neighbors of a cell by checking its neighborhood and the surrounding neighborhoods for cells and records their ID, their distance away from the cell, and the angle at which it resides from the cell. If the cell has neighbors, it calls the getTheta() function in the Cell class to find an empty angle to divide into or returns 999 if there are no empty angles where a cell can fit without overlap.
 * **division()**: This function uses the angle found from CheckNeighbors() to create a new cell at the angle given from the parental cell. It also assigns new trait values and resets other variables using the divNewParams() function found in the Cell class.
 * **move()**: This function checks all neighbors from its neighborhood and the surrounding neighborhoods for collisions defined by the function intersect() defined in the Cell class. If a collision occurs, the persistence and angle of movement are reset.
