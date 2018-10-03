@@ -146,4 +146,5 @@ Please contact me if you have any suggestions for improvement.
 
 ## Authors
 Jill Gallaher - Code, Investigation, Analysis, & Visualization
+
 Joel Brown and Alexander R. A. Anderson - Conceptualization, Methodology, Writing, & Editing
