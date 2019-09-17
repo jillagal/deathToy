@@ -1,0 +1,244 @@
+/*
+ * Base structure
+ */
+
+* { margin:0; padding:0; }
+
+body { 
+    font: 14px avenir next;
+}
+
+ #header {
+    background-color:black;
+    color:grey;
+    text-align:left;
+    padding:6px;
+    width : 100%;
+    overflow : hidden;
+}
+
+#options {
+    display:table;
+    height:50px;
+    /*background-color:white;*/
+    /*top:0px;
+    bottom:0;
+    left:0px;
+    right:0px;*/
+    padding-top:10px;
+    padding-left:20px;
+
+}
+
+#model1_div {
+    display:table-cell;
+    width : auto;
+    margin-right: auto;
+}
+
+#model1 {
+    display:table-cell;
+    width : 100px;
+    margin-right: 100px;
+    background-color:lightgrey;
+}
+
+#model2_div {
+    display:table-cell;
+    width : auto;
+    margin-right: auto;
+}
+
+#model2 {
+    display:table-cell;
+    width : 100px;
+    margin-right: 140px;
+    background-color:lightgrey;
+}
+
+#start, #pause, #reset {
+    background-color:lightgrey;
+    padding: 3px;
+    font-size: 16px;
+}
+
+#control_section{
+    padding:10px;
+    float:none;
+    vertical-align:top;
+    height:100%;
+    overflow:auto;
+}
+
+#prettybox1 {
+    width: 1000px;
+    padding: 2px;
+    height: auto;
+    background-color: white
+}
+
+/*.chart-title {
+    border-bottom: 1px solid #d7d7d7;
+    color: #666;
+    font-size: 14px;
+    font-weight: 200;
+    padding: 7px 10px 4px;
+}*/
+
+#allgraphs {
+    padding:10px;
+    float:none;
+    vertical-align:top;
+    height:100%;
+    overflow:auto;
+}
+
+#OptionsContainer {
+    width: 1200px;
+    background-color: white;
+}
+
+#section {
+    display:table-cell;
+   /* background-color:white;*/
+    width:auto;
+}
+
+#row1 {
+    display:table;
+    width : 1600px;
+    /*background-color:white;*/
+}
+
+#slideshow, #slideshow2 {
+    border-color: grey;
+}
+
+#mov1 {
+    display: inline-block;
+    vertical-align: top;
+    width : 500px;
+    background-color:lightgrey;
+    margin-right: 20px;
+}
+
+#mov2 {
+    display: inline-block;
+    vertical-align: top;
+    width : 500px;
+    background-color:lightgrey;
+}
+
+#row2 {
+    display:table;
+    width : 1600px;
+    /*background-color:white;*/
+    border-color: solid grey;
+    border-width: 0 1px
+}
+
+#graph1 {
+    display: inline-block;
+    vertical-align: top;
+    width : 500px;
+    height : 500px;
+    background-color:white;
+    margin-right: 20px;
+    border-color: solid grey;
+    border-width: 0 1px
+}
+
+.chart-wrapper {
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+.chart-wrapper .chart-title {
+  border-bottom: 1px solid #d7d7d7;
+  color: #666;
+  font-size: 14px;
+  font-weight: 200;
+  padding: 7px 10px 4px;
+}
+
+.chart-wrapper .chart-stage {
+  /*min-height: 240px;*/
+  overflow: hidden;
+  padding: 5px 10px;
+  position: relative;
+}
+
+.chart-wrapper .chart-notes {
+  background: #fbfbfb;
+  border-top: 1px solid #e2e2e2;
+  color: #808080;
+  font-size: 12px;
+  padding: 8px 10px 5px;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block
+}
+
+body.application {
+  background: "img/squared_metal.png";
+  padding: 60px 20px 0;
+}
+body.application > .container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+body.application div[class^="col-"] {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+body.application div[class^="col-"] div[class^="col-"] {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+body.application hr {
+  border-color: #d7d7d7;
+  margin: 10px 0;
+}
+
+
+.navbar-inverse {
+  background-color: #3d4a57;
+  border-color: #333;
+}
+.navbar-inverse .navbar-nav > li > a,
+.navbar .navbar-brand {
+  color: #fbfbfb;
+  text-decoration: none;
+}
+
+.main-nav > li > a:hover {
+  border-bottom: 2px solid transparent;
+  -webkit-transition: border 300ms ease;
+  -o-transition: border 300ms ease;
+  transition: border 300ms ease;
+  border-bottom-color: white;
+}
+
+.return-link, .return-link:focus, .return-link:hover {
+  text-decoration: none;
+}
+/*
+path { 
+    stroke: #;
+    stroke-width: none;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}*/
+

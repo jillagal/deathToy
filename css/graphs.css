@@ -1,0 +1,132 @@
+/*
+ * Network plot
+ */
+
+/* For the network plot */
+
+.node circle {
+cursor: pointer;
+stroke: black;
+stroke-width: 1px;
+}
+*/
+.node text {
+font: 0px sans-serif;
+pointer-events: none;
+text-anchor: middle;
+}
+
+line.link {
+  fill: none;
+  stroke: lightgrey;
+  stroke-width: 1px;
+}
+
+div.tooltip { 
+    position: absolute;     
+    text-align: left;     
+    width: auto;          
+    height: auto;         
+    padding: 10px;       
+    font: 12px sans-serif;    
+    background: #e6ffff; 
+    border: 1px;
+    border-color: black;    
+    border-radius: 5px;     
+    pointer-events: none;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);     
+}
+
+
+/* For the line graphs */
+path { 
+    stroke: #;
+    stroke-width: none;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.voronoi path {
+  fill: none;
+  pointer-events: all;
+}
+
+.voronoi--show path {
+  stroke: grey;
+  stroke-opacity: .2;
+}
+
+.focus circle {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2;
+}
+
+.focus text {
+    fill: black;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.focus_pop text {
+    fill: black;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.focus_pop circle {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2;
+}
+
+.focus_dis text {
+    fill: black;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.focus_dis circle {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2;
+}
+
+.d3-tip {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+}
+.epithelial_bars rect {
+  fill: blue;
+  shape-rendering: crispEdges;
+}
+.epithelial_bars rect:hover{
+  fill: #00009C;
+}
+.adenoma_bars rect {
+  fill: green;
+  shape-rendering: crispEdges;
+}
+.adenoma_bars rect:hover{
+  fill: #006633;
+}
+.carcinoma_bars rect {
+  fill: red;
+  shape-rendering: crispEdges;
+}
+.carcinoma_bars rect:hover{
+  fill: #A02422;
+}
+
+

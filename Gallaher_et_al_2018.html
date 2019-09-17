@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <!--<meta charset="utf-8">-->
+    <meta name="viewport" content ="width=device-width,initial-scale=1,user-scalable=yes" />
+    <title>The dynamic tumor ecosystem</title>
+    <link href="css/test.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-1.2.0.min.js"></script>
+  </head>
+
+  <body class="application", background="img/squared_metal.png">
+
+  <!-- Selections!!!! -->
+  <div class="container-fluid">
+
+    <div class="row">
+      
+      <div class="col-1">
+      <div class="chart-wrapper">
+                 <!-- New row -->
+    <div class="graphrow">
+      
+      <div class='graphcell'>
+      <div class="col-sm-8">
+      <div class="chart-wrapper">
+          <div class="chart-title">
+            
+          </div>
+          <div class="chart-stage">
+            <div id="grid-1-1"> 
+              <div>
+                <!-- BEGIN CHART AREA -->
+                  
+                <table style="width:100%">
+                <tr>
+                  <th> <font size="4">The dynamic tumor ecosystem: how cell turnover and trade-offs affect cancer evolution </font><br />
+                  </th>
+                </tr>
+              </table>
+              <table style="width:100%">
+                <tr>
+                  <th> <font size="1">J. Gallaher, J. Brown, and A. R. A. Anderson</font> </th>
+                </tr>
+              </table>
+                  
+                <!-- END CHART AREA -->
+              </div>
+            </div>
+          </div>
+          <div class="chart-notes" width=90%>
+            <!-- Begin Chart Notes -->
+            <center>
+
+              <select id="select1" style="background-color:#FFFF00;">
+                <option value="0">select 1st</option>
+                <option value="1">Demographic Stochasticity</option>
+                <option value="2">Environmental Stochasticity</option>
+                <option value="3">Open Trade-off</option>
+                <option value="4">Convex Trade-off</option>
+                <option value="5">Concave Trade-off</option>
+              </select>
+
+              <select id="select2" style="background-color:#FFFF00;">
+                <option value="0"> select 2nd </option>
+              </select>
+
+                  <!--<button id="controlButton" onclick="playControl()">Play</button>-->
+                  <input onclick="playControl()" type="button" value="Play" id="controlButton"/>
+                  <input type="range" id="seek-bar" value="0" >
+
+            <!-- END CHART NOTES -->
+          </div>
+          <div class="chart-notes" width=10%>
+            <center>
+              <p>Compare three conditions simulataneously over time. The average phenotypes are plotted in the rightmost graph.<br /></p>
+              <p>1) Choose criteria from dropdown menus.<br /> </p>
+              <p>2) Press Play.<br /></p>
+              <p><a href="https://github.com/jillagal/deathToy" style="text-decoration: none">java code</a></p>
+            <!--<img id="textSrc" src='img/t0.png' width=40%></img>-->
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <!-- END ROW -->
+      </div>
+                
+      </div>
+      <!-- END ROW 1 -->
+    </div>
+
+    <!-- New row -->
+    <div class="graphrow">
+      
+      <div class='graphcell'>
+      <div class="col-sm-8">
+      <div class="chart-wrapper">
+          <div class="chart-title">
+            
+          </div>
+          <div class="chart-stage">
+            <div id="grid-1-1"> 
+              <div>
+                <!-- BEGIN CHART AREA   style="display:inline-block"-->
+                    <!--head-->
+                    <div width="100%" style="float:left">
+                      <img id='head' width="100%" style="float:left;"></img> 
+                      </center>
+                    </div>
+
+                    <!--spatial-->
+                    <div width="100%" style="float:left">
+                      <video style="float:left; margin: 0 auto;" id="mov1" width=27%>
+                      <!--<source id="src1h" src='newMovs/H264/1_0_0.mp4' type="video/mp4">-->
+                      <source id="src1h" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                      <video style="float:left; margin: 0 auto;" id="mov2" width=27%>
+                        <!--<source id="src2h" src='newMovs/H264/0_0_0.mp4' type="video/mp4">-->
+                        <source id="src2h" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                      <video style="float:left; margin: 0 auto;" id="mov3" width=27%> 
+                        <!--<source id="src3h" src='newMovs/H264/3_0_0.mp4' type="video/mp4">-->
+                        <source id="src3h" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                      <video style="float:left; margin: 0 auto;" id="mov4" width=19%>
+                        <!--<source id="src4h" src='newMovs/H264/mapNoD.mp4' type="video/mp4">-->
+                        <source id="src4h" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                      
+                  </div>
+
+                </div>
+                  
+                <!-- END CHART AREA -->
+              </div>
+            </div>
+          </div>
+          <div class="chart-notes">
+            <!-- Begin Chart Notes -->
+
+            <!-- END CHART NOTES -->
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <!-- END ROW -->
+      </div>
+
+    
+    <!-- END CONTAINER-FLUID -->
+    </div>
+
+
+        <script type="text/javascript">
+
+          //////.   VARIABLES.    ///////
+
+        var videobutton1 = document.getElementById("select1");
+        var videobutton2 = document.getElementById("select2");
+
+        var videocontainer1 = document.getElementById('mov1');
+        var videosource1h = document.getElementById('src1h');
+        var videocontainer2 = document.getElementById('mov2');
+        var videosource2h = document.getElementById('src2h');
+        var videocontainer3 = document.getElementById('mov3');
+        var videosource3h = document.getElementById('src3h');
+        var videocontainer4 = document.getElementById('mov4');
+        var videosource4h = document.getElementById('src4h');
+
+        var headsrc = document.getElementById('head');
+        var seekBar = document.getElementById("seek-bar");
+
+        //var textsource = document.getElementById('textSrc');
+
+        var v1 = new Array();
+        v1=[['1_0_0','0_0_0','3_0_0','mapNoD'],
+            ['1_low_0','0_low_0','3_low_0','mapLowD'],
+            ['1_high_0','0_high_0','3_high_0','mapHighD'],
+            ['1_high_0','0_high_0','3_high_0','mapHighD'],
+            ['1_high_50','0_high_50','3_high_50','mapCat50'],
+            ['1_high_100','0_high_100','3_high_100','mapCat100'],
+            ['1_0_0','1_low_0','1_high_0','mapOpenDemo'],
+            ['1_high_0','1_high_50','1_high_100','mapOpenCat'],
+            ['0_0_0','0_low_0','0_high_0','mapVexDemo'],
+            ['0_high_0','0_high_50','0_high_100','mapVexCat'],
+            ['3_0_0','3_low_0','3_high_0','mapCaveDemo'],
+            ['3_high_0','3_high_50','3_high_100','mapCaveCat']];
+        //t1=['1','2','3','4','5','6','7','8','9','10','11','12'];
+        hS=['to','to','to','to','to','to','death','cat','death','cat','death','cat'];
+
+        /////   EVENT LISTENERS    /////////
+
+        videobutton1.addEventListener("change", function(event) {
+          videocontainer1.pause();
+          videocontainer2.pause();
+          videocontainer3.pause();
+          videocontainer4.pause();
+          document.getElementById("controlButton").value = 'Play';
+
+          var buttonVal = videobutton1.value;
+          videobutton1.setAttribute("style", "background-color: white;");
+          videobutton2.setAttribute("style", "background-color: #FFFF00;");
+
+          if(buttonVal==1){
+            var select = document.getElementById("select2");
+            select.options.length = 0;
+            select.options[0] = new Option('select', '12', false, false);
+            select.options[1] = new Option('no death', '0', false, false);
+            select.options[2] = new Option('low death', '1', false, false);
+            select.options[3] = new Option('high death', '2', false, false);
+          }
+          else if (buttonVal==2){
+            var select = document.getElementById("select2");
+            select.options.length = 0;
+            select.options[0] = new Option('select', '12', false, false);
+            select.options[1] = new Option('0% catastrophic', '3', false, false);
+            select.options[2] = new Option('50% catastrophic', '4', false, false);
+            select.options[3] = new Option('100% catastrophic', '5', false, false);
+          }
+          else if(buttonVal==3){
+            var select = document.getElementById("select2");
+            select.options.length = 0;
+            select.options[0] = new Option('select', '12', false, false);
+            select.options[1] = new Option('Demographic Stochasticity', '6', false, false);
+            select.options[2] = new Option('Environmental Stochasticity', '7', false, false);
+          }
+          else if(buttonVal==4){
+            var select = document.getElementById("select2");
+            select.options.length = 0;
+            select.options[0] = new Option('select', '12', false, false);
+            select.options[1] = new Option('Demographic Stochasticity', '8', false, false);
+            select.options[2] = new Option('Environmental Stochasticity', '9', false, false);
+          }
+          else{
+            var select = document.getElementById("select2");
+            select.options.length = 0;
+            select.options[0] = new Option('select', '12', false, false);
+            select.options[1] = new Option('Demographic Stochasticity', '10', false, false);
+            select.options[2] = new Option('Environmental Stochasticity', '11', false, false);
+          }
+          
+        }, false);
+
+        videobutton2.addEventListener("change", function(event) {
+
+          var buttonVal2 = videobutton2.value;
+          videobutton2.setAttribute("style", "background-color: white;");
+          loadSource(buttonVal2);
+          
+        }, false);
+
+        seekBar.addEventListener("input", function() {
+          // Calculate the new time
+          var time = videocontainer1.duration * (seekBar.value / 100);
+
+          // Update the video time
+          videocontainer1.currentTime = time;
+          videocontainer2.currentTime = time;
+          videocontainer3.currentTime = time;
+          videocontainer4.currentTime = time;
+          pauseVids();
+        });
+
+
+        ////    FUNCTIONS     ////////
+
+        function moveSeekBar() { 
+          var val = 0;
+          var id = setInterval(frame, 10);
+          function frame() {
+            if (val >= 100 || videocontainer1.paused) {
+              pauseVids();
+              clearInterval(id);
+            } 
+            else {
+              val=100*videocontainer1.currentTime/videocontainer1.duration; 
+              seekBar.value=val;
+            }
+          }
+        }
+
+        function loadSource(buttonVal) {
+          pauseVids();
+
+          videosource1h.setAttribute('src', 'newMovs/H264/'+v1[buttonVal][0]+'.mp4');
+          videocontainer1.load();
+          videosource2h.setAttribute('src', 'newMovs/H264/'+v1[buttonVal][1]+'.mp4');
+          videocontainer2.load();
+          videosource3h.setAttribute('src', 'newMovs/H264/'+v1[buttonVal][2]+'.mp4');
+          videocontainer3.load();
+          videosource4h.setAttribute('src', 'newMovs/H264/'+v1[buttonVal][3]+'.mp4');
+          videocontainer4.load();
+          headsrc.setAttribute('src', 'img/'+hS[buttonVal]+'.png');
+          seekBar.value=0;
+
+        }
+
+        function playControl() { 
+          if (videocontainer1.paused) { 
+            videocontainer1.play();
+            videocontainer2.play(); 
+            videocontainer3.play(); 
+            videocontainer4.play(); 
+            document.getElementById("controlButton").value = 'Pause';
+            moveSeekBar();
+          } 
+          else { 
+            pauseVids();
+          }
+        }
+
+        function pauseVids() { 
+          videocontainer1.pause();
+          videocontainer2.pause(); 
+          videocontainer3.pause(); 
+          videocontainer4.pause();
+          document.getElementById("controlButton").value = 'Play';
+        }  
+         
+        </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  </body>
+
+</html>
