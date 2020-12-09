@@ -303,7 +303,14 @@
           headsrc.setAttribute('src', 'img/'+hS[buttonVal]+'.png');
           seekBar.value=0;
           
-          checkLoaded();
+          //checkLoaded();
+          do{
+            flag =videocontainer1.bufferedPercent()>.5 && videocontainer2.bufferedPercent()>.5 && videocontainer3.bufferedPercent()>.5 && videocontainer4.bufferedPercent()>.5;
+            loaded = 100*(videocontainer1.bufferedPercent()+videocontainer2.bufferedPercent()+videocontainer3.bufferedPercent()+videocontainer4.bufferedPercent())/4;
+            document.getElementById("controlButton").value = loaded.ToString();
+          }
+          while(flag==false);
+          document.getElementById("controlButton").value = 'Play';
           
         }
 
