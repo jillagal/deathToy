@@ -303,10 +303,10 @@
           headsrc.setAttribute('src', 'img/'+hS[buttonVal]+'.png');
           seekBar.value=0;
           
-          while(videocontainer1.bufferedPercent()<.8 && videocontainer2.bufferedPercent()<.8 && videocontainer3.bufferedPercent()<.8 && videocontainer4.bufferedPercent()<.8){
-            
-          }
-          document.getElementById("controlButton").value = 'Play';
+          checkLoaded();
+          //while(){
+          //}
+          
 
         }
 
@@ -330,7 +330,16 @@
           videocontainer3.pause(); 
           videocontainer4.pause();
           document.getElementById("controlButton").value = 'Play';
-        }  
+        } 
+          
+        function checkLoaded() {
+          flag =videocontainer1.bufferedPercent()>.8 && videocontainer2.bufferedPercent()>.8 && videocontainer3.bufferedPercent()>.8 && videocontainer4.bufferedPercent()>.8;
+          if(flag == false) {
+            window.setTimeout(checkLoaded, 100); /* this checks the flag every 100 milliseconds*/
+          } else {
+            document.getElementById("controlButton").value = 'Play';
+          }
+        }
          
         </script>
 
