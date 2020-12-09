@@ -290,6 +290,7 @@
 
         function loadSource(buttonVal) {
           pauseVids();
+          document.getElementById("controlButton").value = '';
 
           videosource1h.setAttribute('src', 'newMovs/H264/'+v1[buttonVal][0]+'.mp4');
           videocontainer1.load();
