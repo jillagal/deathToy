@@ -329,16 +329,13 @@
           document.getElementById("controlButton").value = 'Play';
         } 
           
-        function checkLoaded() {
-          while (flag==false){       
-            if (checkFlag()) {document.getElementById("controlButton").value = 'Play'; return }
-            else{setTimeout(checkLoaded(), 100);} 
-          }
-        }
-          
         function checkFlag() {
           flag =videocontainer1.bufferedPercent()>.8 && videocontainer2.bufferedPercent()>.8 && videocontainer3.bufferedPercent()>.8 && videocontainer4.bufferedPercent()>.8;
-          return flag;
+          if(flag == false) {
+            window.setTimeout(checkFlag, 100); /* this checks the flag every 100 milliseconds*/
+          } else {
+            document.getElementById("controlButton").value = 'Play';
+          }
         }
          
         </script>
