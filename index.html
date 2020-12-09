@@ -304,6 +304,7 @@
           seekBar.value=0;
           
           //checkLoaded();
+          flag =videocontainer1.bufferedPercent()>.5 && videocontainer2.bufferedPercent()>.5 && videocontainer3.bufferedPercent()>.5 && videocontainer4.bufferedPercent()>.5;
           do{
             flag =videocontainer1.bufferedPercent()>.5 && videocontainer2.bufferedPercent()>.5 && videocontainer3.bufferedPercent()>.5 && videocontainer4.bufferedPercent()>.5;
             loaded = 100*(videocontainer1.bufferedPercent()+videocontainer2.bufferedPercent()+videocontainer3.bufferedPercent()+videocontainer4.bufferedPercent())/4;
