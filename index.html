@@ -304,10 +304,7 @@
           seekBar.value=0;
           
           checkLoaded();
-          //while(){
-          //}
           
-
         }
 
         function playControl() { 
@@ -333,11 +330,10 @@
         } 
           
         function checkLoaded() {
-          flag =videocontainer1.bufferedPercent()>.8 && videocontainer2.bufferedPercent()>.8 && videocontainer3.bufferedPercent()>.8 && videocontainer4.bufferedPercent()>.8;
-          if(flag == false) {
-            window.setTimeout(checkLoaded, 100); /* this checks the flag every 100 milliseconds*/
-          } else {
-            document.getElementById("controlButton").value = 'Play';
+          while (true){
+            flag =videocontainer1.bufferedPercent()>.8 && videocontainer2.bufferedPercent()>.8 && videocontainer3.bufferedPercent()>.8 && videocontainer4.bufferedPercent()>.8;
+            if (flag) {document.getElementById("controlButton").value = 'Play'; return };
+            await null; // prevents app from hanging
           }
         }
          
