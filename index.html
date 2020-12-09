@@ -330,11 +330,15 @@
         } 
           
         function checkLoaded() {
-          while (true){
-            flag =videocontainer1.bufferedPercent()>.8 && videocontainer2.bufferedPercent()>.8 && videocontainer3.bufferedPercent()>.8 && videocontainer4.bufferedPercent()>.8;
-            if (flag) {document.getElementById("controlButton").value = 'Play'; return };
-            await null; // prevents app from hanging
+          while (true){       
+            if (checkFlag()) {document.getElementById("controlButton").value = 'Play'; return }
+            else{setTimeout(checkFlag(), 100); 
           }
+        }
+          
+        function checkFlag() {
+          flag =videocontainer1.bufferedPercent()>.8 && videocontainer2.bufferedPercent()>.8 && videocontainer3.bufferedPercent()>.8 && videocontainer4.bufferedPercent()>.8;
+          return flag;
         }
          
         </script>
