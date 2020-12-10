@@ -303,11 +303,11 @@
           headsrc.setAttribute('src', 'img/'+hS[buttonVal]+'.png');
           seekBar.value=0;
           
-          var flag =videocontainer1.bufferedPercent()>.5 && videocontainer2.bufferedPercent()>.5 && videocontainer3.bufferedPercent()>.5 && videocontainer4.bufferedPercent()>.5;
+          var flag =videosource1h.bufferedPercent()>.5 && videosource1h.bufferedPercent()>.5 && videosource1h.bufferedPercent()>.5 && videosource1h.bufferedPercent()>.5;
           wait = (seconds) => new Promise(resolve => setTimeout(() => resolve(true), seconds * 1000));
           doWork = async() => {
             if(await this.wait(3)) {
-              flag =videocontainer1.bufferedPercent()>.5 && videocontainer2.bufferedPercent()>.5 && videocontainer3.bufferedPercent()>.5 && videocontainer4.bufferedPercent()>.5;
+              flag =videosource1h.bufferedPercent()>.5 && videosource1h.bufferedPercent()>.5 && videosource1h.bufferedPercent()>.5 && videosource1h.bufferedPercent()>.5;
               if(flag){
                 document.getElementById("controlButton").value = 'Play';break;
               }
