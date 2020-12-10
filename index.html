@@ -66,7 +66,7 @@
               </select>
 
                   <!--<button id="controlButton" onclick="playControl()">Play</button>-->
-                  <input onclick="playControl()" type="button" value="Play" id="controlButton"/>
+                  <input onclick="playControl()" type="button" value="Select" id="controlButton"/>
                   <input type="range" id="seek-bar" value="0" >
             </center>
             <!-- END CHART NOTES -->
@@ -204,7 +204,6 @@
           videocontainer2.pause();
           videocontainer3.pause();
           videocontainer4.pause();
-          document.getElementById("controlButton").value = 'Play';
 
           var buttonVal = videobutton1.value;
           videobutton1.setAttribute("style", "background-color: white;");
@@ -302,31 +301,17 @@
           videocontainer4.load();
           headsrc.setAttribute('src', 'img/'+hS[buttonVal]+'.png');
           seekBar.value=0;
-          
-          var bufferLengthDetector = setInterval(readBuffer(videosource1h), 500);
-          console.log(bufferLengthDetector);
-          //var flag =videosource1h.readyState == 4;
-          //wait = (seconds) => new Promise(resolve => setTimeout(() => resolve(true), seconds * 1000));
-          //doWork = async() => {
-          //  if(await this.wait(3)) {
-          //    flag =videosource1h.readyState == 4;
-          //    if(flag){
-          //      document.getElementById("controlButton").value = 'Play';
-          //    }
-          //    else{
-          //      document.getElementById("controlButton").value = 'Hi';
-          //    }
-          //  }
-          //}
-          //checkLoaded();
-          //var flag =videocontainer1.bufferedPercent()>.5 && videocontainer2.bufferedPercent()>.5 && videocontainer3.bufferedPercent()>.5 && videocontainer4.bufferedPercent()>.5;
-          //do{
-          //  flag =videocontainer1.bufferedPercent()>.5 && videocontainer2.bufferedPercent()>.5 && videocontainer3.bufferedPercent()>.5 && videocontainer4.bufferedPercent()>.5;
-          //  loaded = 100*(videocontainer1.bufferedPercent()+videocontainer2.bufferedPercent()+videocontainer3.bufferedPercent()+videocontainer4.bufferedPercent())/4;
-          //  document.getElementById("controlButton").value = 'Hi';
-          //}
-          //while(flag==false);
-          //document.getElementById("controlButton").value = 'Play';
+
+          var flag=(videocontainer1.readyState+videocontainer2.readyState+videocontainer3.readyState+videocontainer4.readyState)/16.;
+          var readyStateCheckInterval = setInterval(function() {
+    	  	if (flag == 1) {
+          		clearInterval(readyStateCheckInterval);
+        		document.getElementById("controlButton").value = 'Play';
+    	  	}
+    	  	else{
+    	  		flag =(videocontainer1.readyState+videocontainer2.readyState+videocontainer3.readyState+videocontainer4.readyState)/16.;
+    	  	}
+		  }, 10);
           
         }
 
@@ -351,29 +336,6 @@
           videocontainer4.pause();
           document.getElementById("controlButton").value = 'Play';
         } 
-          
-        function readBuffer(video){
-          var percent = video.buffered.end(video.buffered.length - 1) / video.duration;
-          if (percent >= .9) {
-            linearProgress.buffer = 1;
-            clearInterval(bufferLengthDetector);
-          }
-          else {
-            linearProgress.buffer = percent;
-          }
-        }
-          
-        //function checkFlag() {
-        //  flag =videocontainer1.bufferedPercent()>.5 && videocontainer2.bufferedPercent()>.5 && videocontainer3.bufferedPercent()>.5 && videocontainer4.bufferedPercent()>.5;
-        //  loaded = 100*(videocontainer1.bufferedPercent()+videocontainer2.bufferedPercent()+videocontainer3.bufferedPercent()+videocontainer4.bufferedPercent())/4;
-        //  if(flag == false) {
-        //    window.setTimeout(checkFlag, 100); /* this checks the flag every 100 milliseconds*/
-        //    document.getElementById("controlButton").value = loaded.ToString();
-        //  } else {
-        //    document.getElementById("controlButton").value = 'Play';
-        //  }
-        //}
-       
          
         </script>
 
