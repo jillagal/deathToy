@@ -303,11 +303,11 @@
           headsrc.setAttribute('src', 'img/'+hS[buttonVal]+'.png');
           seekBar.value=0;
           
-          var flag =videocontainer1.readyState == 4;
+          var flag =videosource1h.readyState == 4;
           wait = (seconds) => new Promise(resolve => setTimeout(() => resolve(true), seconds * 1000));
           doWork = async() => {
             if(await this.wait(3)) {
-              flag =videocontainer1.readyState == 4;
+              flag =videosource1h.readyState == 4;
               if(flag){
                 document.getElementById("controlButton").value = 'Play';
               }
